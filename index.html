@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>LinuxSysEX クラウド版</title>
+<title>LinuxSysEX GitHub Pages版</title>
 <style>
 body {
   margin: 0;
@@ -25,38 +25,42 @@ canvas { margin-top: 20px; border: 2px solid #38bdf8; }
 </head>
 <body>
 
-<h1>LinuxSysEX クラウド版</h1>
-<p>GitHub Pages などクラウドから起動可能な TinyCore Linux</p>
+<h1>LinuxSysEX GitHub Pages版</h1>
+<p>タブレットでも動作可能な TinyCore Linux</p>
 
 <button id="start">Linux 起動</button>
 <canvas id="screen" width="800" height="500"></canvas>
 
-<script src="libv86.js"></script>
+<!-- libv86.js を読み込む -->
+<script src="./libv86.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const startBtn = document.getElementById("start");
     startBtn.onclick = () => {
         const canvas = document.getElementById("screen");
-        if(!canvas) return alert("Canvas が見つかりません！");
+        if(!canvas) {
+            alert("Canvas が見つかりません！");
+            return;
+        }
 
         startBtn.disabled = true;
         startBtn.innerText = "起動中…";
 
         try {
             new V86Starter({
-                wasm_url: "v86.wasm",
-                bios_url: "seabios.bin",
-                vgabios_url: "vgabios.bin",
-                kernel_url: "vmlinuz",
-                initrd_url: "core.gz",
+                wasm_url: "./v86.wasm",
+                bios_url: "./seabios.bin",
+                vgabios_url: "./vgabios.bin",
+                kernel_url: "./vmlinuz",
+                initrd_url: "./core.gz",
                 memory_size: 128*1024*1024,
                 vga_memory_size: 8*1024*1024,
                 screen_container: canvas,
                 cmdline: "quiet"
             });
         } catch(e) {
-            alert("起動失敗: " + e);
+            alert("起動に失敗しました: " + e);
             startBtn.disabled = false;
             startBtn.innerText = "Linux 起動";
         }
@@ -66,4 +70,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
-
